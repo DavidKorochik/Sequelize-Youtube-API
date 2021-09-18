@@ -5,6 +5,9 @@ const Suppliers = require('./models/supplier');
 const express = require('express');
 require('dotenv').config();
 
+Customers.hasMany(Orders);
+Suppliers.hasMany(Customers);
+
 const app = express();
 
 app.listen(process.env.PORT, async () => {

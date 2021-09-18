@@ -1,4 +1,7 @@
 const sequelize = require('./db/sequelize');
+const Orders = require('./models/orders');
+const Customers = require('./models/customer');
+const Suppliers = require('./models/supplier');
 const express = require('express');
 require('dotenv').config();
 

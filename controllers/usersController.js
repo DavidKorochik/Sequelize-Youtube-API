@@ -12,16 +12,16 @@ const createUser = async (req, res) => {
         .json({ error: 'One or more fields are not fulfilled!' });
     }
 
-    let user = await User.findAll({ where: { email } });
+    // let user = await User.findAll({ where: { email } });
 
-    if (user) {
-      return res.status(401).json({ error: 'User already exists' });
-    }
+    // if (user) {
+    //   return res.status(401).json({ error: 'User already exists' });
+    // }
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    user = await User.create({ name, email, password: hashedPassword });
+    const user = await User.create({ name, email, password: hashedPassword });
 
     const payload = {
       user: {
@@ -41,4 +41,8 @@ const createUser = async (req, res) => {
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
+};
+
+module.exports = {
+  createUser,
 };

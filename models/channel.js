@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.belongsTo(models.User, { foreignKey: 'user_id', targetKey: 'id' });
-      this.hasMany(models.Video, { foreignKey: 'channel_id', sourceKey: 'id' });
+      this.hasMany(models.Video, { foreignKey: 'user_id', sourceKey: 'id' });
     }
   }
   Channel.init(

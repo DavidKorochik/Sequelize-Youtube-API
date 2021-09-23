@@ -15,12 +15,13 @@ module.exports = {
       views: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        defaultValue: 0,
       },
-      channel_id: {
+      user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'channels',
+          model: 'users',
           key: 'id',
         },
       },

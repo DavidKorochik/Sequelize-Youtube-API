@@ -15,12 +15,13 @@ module.exports = {
       subscribers: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        defaultValue: 0,
       },
       user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'users',
+          model: 'User',
           key: 'id',
         },
       },

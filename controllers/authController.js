@@ -30,8 +30,6 @@ const loginUser = async (req, res) => {
       },
     };
 
-    // res.json(user);
-
     jwt.sign(
       payload,
       process.env.SECRET_KEY,

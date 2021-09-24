@@ -47,11 +47,14 @@ const updateUser = async (req, res) => {
   const { name, email, password } = req.body;
   const obj = {};
 
-  if (name) obj.name = name;
-  if (email) obj.email = email;
-  if (password) obj.password = password;
-
   try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    if (name) obj.name = name;
+    if (email) obj.email = email;
+    if (password) obj.password = hashedPassword;
+
     const updatedUser = await User.update(
       { obj },
       { where: { [Op.and]: [{ id }, { id: req.user.id }] } }

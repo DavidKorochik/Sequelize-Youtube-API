@@ -11,8 +11,8 @@ router.post('/:videoid', auth, createComment);
 
 router.get('/:videoid', getAllComments);
 
-router.put('/:videoid/:commentid', updateComment);
+router.put('/:videoid/:commentid', auth, updateComment);
 
-router.delete('/:videoid/:commentid', deleteComment);
+router.delete('/:videoid/:commentid', auth, deleteComment);
 
 module.exports = router;

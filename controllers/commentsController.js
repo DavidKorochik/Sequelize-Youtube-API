@@ -46,7 +46,15 @@ const updateComment = async (req, res) => {
   try {
     const updatedComment = await Comment.update(
       { comment },
-      { where: { [Op.and]: [{ id: comment_id }, { video_id }] } }
+      {
+        where: {
+          [Op.and]: [
+            { id: comment_id },
+            { video_id },
+            { user_id: req.user.id },
+          ],
+        },
+      }
     );
 
     res.json(updatedComment);
@@ -60,7 +68,9 @@ const deleteComment = async (req, res) => {
   const comment_id = req.params.commentid;
   try {
     const deletedComment = await Comment.destroy({
-      where: { [Op.and]: [{ id: comment_id }, { video_id }] },
+      where: {
+        [Op.and]: [{ id: comment_id }, { video_id }, { user_id: req.user.id }],
+      },
     });
 
     res.json(deletedComment);

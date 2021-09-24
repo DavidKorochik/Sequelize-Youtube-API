@@ -1,4 +1,5 @@
 const { Channel } = require('../models/index');
+const { Op } = require('sequelize');
 
 const createChannel = async (req, res) => {
   const { name } = req.body;
@@ -36,7 +37,10 @@ const updateChannel = async (req, res) => {
   const id = req.params.id;
   const { name } = req.body;
   try {
-    const updatedChannel = await Channel.update({ name }, { where: { id } });
+    const updatedChannel = await Channel.update(
+      { name },
+      { where: { [Op.and]: [{ id }, { user_id: req.user.id }] } }
+    );
 
     res.json(updatedChannel);
   } catch (err) {
@@ -48,7 +52,7 @@ const deleteChannel = async (req, res) => {
   const id = req.params.id;
   try {
     const deletedChannel = await Channel.destroy({
-      where: { id },
+      where: { [Op.and]: [{ id }, { user_id: req.user.id }] },
     });
 
     res.json(deletedChannel);

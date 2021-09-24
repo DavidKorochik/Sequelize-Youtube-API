@@ -1,4 +1,5 @@
 const { User } = require('../models/index');
+const { Op } = require('sequelize');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
@@ -41,6 +42,42 @@ const createUser = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  const id = req.params.id;
+  const { name, email, password } = req.body;
+  const obj = {};
+
+  if (name) obj.name = name;
+  if (email) obj.email = email;
+  if (password) obj.password = password;
+
+  try {
+    const updatedUser = await User.update(
+      { obj },
+      { where: { [Op.and]: [{ id }, { id: req.user.id }] } }
+    );
+
+    res.json(updatedUser);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const deletedUser = await User.destroy({
+      where: { [Op.and]: [{ id }, { id: req.user.id }] },
+    });
+
+    res.json(deletedUser);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
 module.exports = {
   createUser,
+  updateUser,
+  deleteUser,
 };

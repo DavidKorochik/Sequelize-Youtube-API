@@ -1,4 +1,5 @@
 const { Comment } = require('../models/index');
+const { Op } = require('sequelize');
 
 const createComment = async (req, res) => {
   const { comment } = req.body;
@@ -24,7 +25,7 @@ const getAllComments = async (req, res) => {
   const video_id = req.params.videoid;
   try {
     const comments = await Comment.findAll({
-      where: { video_id: video_id },
+      where: { video_id },
       inclide: ['User', 'Video'],
     });
 
@@ -38,7 +39,39 @@ const getAllComments = async (req, res) => {
   }
 };
 
+const updateComment = async (req, res) => {
+  const video_id = req.params.videoid;
+  const comment_id = req.params.commentid;
+  const { comment } = req.body;
+  try {
+    const updatedComment = await Comment.update(
+      { comment },
+      { where: { [Op.and]: [{ id: comment_id }, { video_id }] } }
+    );
+
+    res.json(updatedComment);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+const deleteComment = async (req, res) => {
+  const video_id = req.params.videoid;
+  const comment_id = req.params.commentid;
+  try {
+    const deletedComment = await Comment.destroy({
+      where: { [Op.and]: [{ id: comment_id }, { video_id }] },
+    });
+
+    res.json(deletedComment);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
 module.exports = {
   createComment,
   getAllComments,
+  updateComment,
+  deleteComment,
 };

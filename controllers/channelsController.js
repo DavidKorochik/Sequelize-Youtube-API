@@ -35,10 +35,6 @@ const getChannel = async (req, res) => {
 const updateChannel = async (req, res) => {
   const id = req.params.id;
   const { name } = req.body;
-  const obj = {};
-
-  if (name) obj.name = name;
-
   try {
     const updatedChannel = await Channel.update({ name }, { where: { id } });
 

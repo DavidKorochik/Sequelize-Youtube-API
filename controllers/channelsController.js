@@ -32,7 +32,38 @@ const getChannel = async (req, res) => {
   }
 };
 
+const updateChannel = async (req, res) => {
+  const id = req.params.id;
+  const { name } = req.body;
+  const obj = {};
+
+  if (name) obj.name = name;
+
+  try {
+    const updatedChannel = await Channel.update({ name }, { where: { id } });
+
+    res.json(updatedChannel);
+  } catch (err) {
+    return res.status(404).json({ error: 'No channel was found!' });
+  }
+};
+
+const deleteChannel = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const deletedChannel = await Channel.destroy({
+      where: { id },
+    });
+
+    res.json(deletedChannel);
+  } catch (err) {
+    return res.status(404).json({ error: 'No channel was found!' });
+  }
+};
+
 module.exports = {
   createChannel,
   getChannel,
+  updateChannel,
+  deleteChannel,
 };
